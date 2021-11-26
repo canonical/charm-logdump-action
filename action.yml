@@ -1,8 +1,6 @@
 name: Charmed Operator Log Dump
 description: >
-  The charmed operator log dump action is an action used in CI 
-  workflows to print out logs and metadata on failure to assist you
-  in your troubleshooting efforts.
+  Print out logs and metadata to assist you in troubleshooting charm issues.
 inputs:
   model:
     default: testing
