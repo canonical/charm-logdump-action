@@ -8,14 +8,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup operator environment
         uses: charmed-kubernetes/actions-operator@main
+        with:
+          provider: microk8s
       - name: Deploy a charm
-        run: |
-          juju add-model testing
-          juju deploy hello-kubecon
+        run: juju deploy hello-kubecon
       - name: Fail
         run: "false"
       - name: Dump logs
-        uses: .
+        uses: canonical/charm-logdump-action@HEAD
+        if: failure()
         with:
-          model: testing
           app: hello-kubecon

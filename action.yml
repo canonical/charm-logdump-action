@@ -5,14 +5,14 @@ description: >
   in your troubleshooting efforts.
 inputs:
   model:
-    required: true
+    default: testing
     description: |
       The name of the model you want to print the info for, for instance
       `testing` or `lma`.
   app:
     required: true
     description: |
-      Operator to filter kubernetes logs by. Defaults to `modeloperator`.  
+      Operator to filter kubernetes logs by.  
   operator:
     default: modeloperator
     description: |
@@ -22,28 +22,37 @@ runs:
   using: "composite"
   steps:
     - name: Get all
-      run: kubectl get all -A
+      run: sudo microk8s.kubectl get all -A
+      shell: bash
 
     - name: Describe deployments
-      run: kubectl describe deployments -A
+      run: |
+        sudo microk8s.kubectl describe \
+          deployments -A
+      shell: bash
 
     - name: Describe replicasets
-      run: kubectl describe replicasets -A
+      run: |
+        sudo microk8s.kubectl describe \
+          replicasets -A
+      shell: bash
 
     - name: Get juju status
       run: juju status
+      shell: bash
 
     - name: Get application charm logs
       run: |
-        kubectl logs \
+        sudo microk8s.kubectl logs \
           -n ${{ inputs.model }} \
           --all-containers \
           --tail 1000 \
           --selector app.kubernetes.io/name=${{ inputs.app }}
-  
+      shell: bash
     - name: Get operator controller logs
       run: |
-        kubectl logs \
+        sudo microk8s.kubectl logs \
           -n ${{ inputs.model }} \
           --tail 1000 \
           --selector operator.juju.is/name=${{ inputs.operator }}
+      shell: bash
