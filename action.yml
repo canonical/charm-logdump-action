@@ -1,0 +1,49 @@
+name: Charmed Operator Log Dump
+description: >
+  The charmed operator log dump action is an action used in CI 
+  workflows to print out logs and metadata on failure to assist you
+  in your troubleshooting efforts.
+inputs:
+  model:
+    required: true
+    description: |
+      The name of the model you want to print the info for, for instance
+      `testing` or `lma`.
+  app:
+    required: true
+    description: |
+      Operator to filter kubernetes logs by. Defaults to `modeloperator`.  
+  operator:
+    default: modeloperator
+    description: |
+      Operator to filter kubernetes logs by. Defaults to `modeloperator`.
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Get all
+      run: kubectl get all -A
+
+    - name: Describe deployments
+      run: kubectl describe deployments -A
+
+    - name: Describe replicasets
+      run: kubectl describe replicasets -A
+
+    - name: Get juju status
+      run: juju status
+
+    - name: Get application charm logs
+      run: |
+        kubectl logs \
+          -n ${{ inputs.model }} \
+          --all-containers \
+          --tail 1000 \
+          --selector app.kubernetes.io/name=${{ inputs.app }}
+  
+    - name: Get operator controller logs
+      run: |
+        kubectl logs \
+          -n ${{ inputs.model }} \
+          --tail 1000 \
+          --selector operator.juju.is/name=${{ inputs.operator }}
