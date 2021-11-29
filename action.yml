@@ -20,18 +20,18 @@ runs:
   using: "composite"
   steps:
     - name: Get all
-      run: sudo microk8s.kubectl get all -A
+      run: sudo kubectl get all -A
       shell: bash
 
     - name: Describe deployments
       run: |
-        sudo microk8s.kubectl describe \
+        sudo kubectl describe \
           deployments -A
       shell: bash
 
     - name: Describe replicasets
       run: |
-        sudo microk8s.kubectl describe \
+        sudo kubectl describe \
           replicasets -A
       shell: bash
 
@@ -41,7 +41,7 @@ runs:
 
     - name: Get application charm logs
       run: |
-        sudo microk8s.kubectl logs \
+        sudo kubectl logs \
           -n ${{ inputs.model }} \
           --all-containers \
           --tail 1000 \
@@ -49,7 +49,7 @@ runs:
       shell: bash
     - name: Get operator controller logs
       run: |
-        sudo microk8s.kubectl logs \
+        sudo kubectl logs \
           -n ${{ inputs.model }} \
           --tail 1000 \
           --selector operator.juju.is/name=${{ inputs.operator }}
