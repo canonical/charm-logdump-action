@@ -10,11 +10,13 @@ inputs:
   app:
     required: true
     description: |
-      Operator to filter kubernetes logs by.  
+      The label of the application you want to print logs for, for instance
+      "minio" or "prometheus".
   operator:
     default: modeloperator
     description: |
-      Operator to filter kubernetes logs by. Defaults to `modeloperator`.
+      The label of the Juju operator pod to print the info for.  Defaults
+      to `modeloperator`, which is the model operator.
   
 runs:
   using: "composite"
