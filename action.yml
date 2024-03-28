@@ -25,6 +25,11 @@ runs:
       run: kubectl get all -A
       shell: bash
 
+    - name: Describe statefulsets
+      run: |
+        kubectl describe \
+          statefulsets -A
+
     - name: Describe deployments
       run: |
         kubectl describe \
@@ -38,7 +43,7 @@ runs:
       shell: bash
 
     - name: Get juju status
-      run: juju status
+      run: juju status --relations
       shell: bash
 
     - name: Get application charm logs
