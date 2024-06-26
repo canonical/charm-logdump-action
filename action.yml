@@ -38,7 +38,7 @@ runs:
       shell: bash
 
     - name: Get juju status
-      run: juju status
+      run: juju status -m ${{ inputs.model }}
       shell: bash
 
     - name: Get application charm logs
