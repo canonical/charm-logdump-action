@@ -29,6 +29,7 @@ runs:
       run: |
         kubectl describe \
           statefulsets -A
+      shell: bash
 
     - name: Describe deployments
       run: |
